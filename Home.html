@@ -1,0 +1,78 @@
+{% extends "base/conduit_base.html" %}
+{% block body %}
+
+<div class="home-page">
+  <div class="banner">
+    <div class="container">
+      <h1 class="logo-font">conduit</h1>
+      <p>A place to share your knowledge.</p>
+    </div>
+  </div>
+
+  <div class="container page">
+    <div class="row">
+      <div class="col-md-9">
+        <div class="feed-toggle">
+          <ul class="nav nav-pills outline-active">
+            <li class="nav-item">
+              <a class="nav-link" href="">Your Feed</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="">Global Feed</a>
+            </li>
+          </ul>
+        </div>
+
+        {# --- 記事一覧のループ開始 --- #}
+        {% for article in article_list %}
+        <div class="article-preview">
+          <div class="article-meta">
+            <div class="info">
+              <span class="date">{{ article.created_at | date:"Y/m/d" }}</span>
+            </div>
+            <button class="btn btn-outline-primary btn-sm pull-xs-right">
+              <i class="ion-heart"></i> 29
+            </button>
+          </div>
+          <a href="{% url 'conduit:article' article.id %}" class="preview-link">
+            <h1>{{ article.title }}</h1>
+            <p>{{ article.description }}</p>
+            <span>Read more...</span>
+            <ul class="tag-list">
+            {# タグを1つずつ表示するループ #}
+              {% for tag in article.tags.all %}
+              <li class="tag-default tag-pill tag-outline">
+                {{ tag.name }} 
+              </li>
+              {% endfor %}
+            </ul>
+          </a>
+        </div>
+        {% empty %}
+        <div class="article-preview">No articles found.</div>
+        {% endfor %}
+        {# --- 記事一覧のループ終了 --- #}
+      </div>
+      <br>
+      <a class="nav-link" href="{% url "conduit:create_article" %}"> 
+        <i class="ion-compose"></i>
+        &nbsp;Create New Article 
+      </a>
+
+      {# サイドバー（タグ一覧） #}
+      <div class="col-md-3">
+        <div class="sidebar">
+          <p>Popular Tags</p>
+          <div class="tag-list">
+            {% for tag in tags %}
+            <a href="" class="tag-pill tag-default">{{ tag.name }}</a>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}

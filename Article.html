@@ -1,0 +1,50 @@
+{% extends "base/conduit_base.html" %}
+{% load markdownify %}
+{% block body %}
+
+<div class="article-page">
+    <div class="banner">
+        <div class="container">
+            <h1>{{ article_page.title }}</h1>
+
+            <div class="article-meta">
+                <div class="info">                    
+                    <span class="date">{{ article_page.created_at }}</span>
+                </div>
+                &nbsp;&nbsp;
+
+                <button class="btn btn-sm btn-outline-secondary">
+                    <i class="ion-edit"></i> 
+                    <a href="{% url "conduit:article_update" article_page.id %}">
+                    Edit Article
+                    </a>
+                </button>
+                <button class="btn btn-sm btn-outline-danger">
+                    <i class="ion-trash-a"></i> 
+                    <a href="{% url "conduit:article_delete" article_page.id %}">
+                    Delete Article
+                    </a>
+                </button>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="container page">
+        <div class="row article-content">
+            <div class="col-md-12">
+                <p>{{ article_page.description }}</p>
+                <p>{{ article_page.body | markdownify }}</p>
+
+                <ul class="tag-list">
+                    {% for tag in article_page.tags.all %}
+                        <li class="tag-default tag-pill tag-outline">{{ tag.name }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+   
+
+{% endblock %}
